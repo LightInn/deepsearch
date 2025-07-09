@@ -1,5 +1,7 @@
 use crate::{search, ollama, parser};
 use colored::*;
+use serde::Deserialize;
+use ollama_rs::generation::parameters::{FormatType, JsonSchema, JsonStructure};
 
 pub async fn run(question: &str, max_iterations: u8, model: &str) {
     let mut global_summary = String::new();
@@ -76,50 +78,69 @@ pub async fn run(question: &str, max_iterations: u8, model: &str) {
     }
 }
 
-async fn generate_next_sub_question(main_question: &str, context: &str, model: &str) -> Result<String, Box<dyn std::error::Error>> {
+async fn generate_next_sub_question(
+    main_question: &str,
+    context: &str,
+    model: &str,
+) -> Result<String, Box<dyn std::error::Error>> {
+    #[derive(JsonSchema, Deserialize)]
+    struct SubQuestionOutput {
+        question: String,
+    }
+
     let prompt = if context.is_empty() {
         format!(r#"
-You are a meticulous research assistant. Your task is to generate a specific and relevant sub-question to help answer the main question.
-First, identify the core event or entity in the main question. Then, formulate a sub-question to gather initial information about that event or entity.
-Pay strict attention to the details provided in the main question, such as dates, names, and locations. Do not invent or change these details.
-The sub-question should be a single, focused query that can be effectively used for a web search.
-Respond with a JSON object containing a single key "question".
+You            You are a meticulous research assistant. Your task is to generate a specific and relevant sub-question to help answer the main question.
+            First, identify the core event or entity in the main question. Then, formulate a sub-question to gather initial information about that event or entity.
+            Pay strict attention to the details provided in the main question, such as dates, names, and locations. Do not invent or change these details.
+            The sub-question should be a single, focused query that can be effectively used for a web search.
+            Respond with a JSON object containing a single key "question".
 
-Example:
-{{
-  "question": "What were the key findings of the 2023 IPCC report on climate change?"
-}}
+            Example:
+            {{
+              "question": "What were the key findings of the 2023 IPCC report on climate change?"
+            }}
 
-Main Question: '{}'
-"#, main_question)
+            Main Question: '{}'
+            "#,
+            main_question
+        )
     } else {
         format!(r#"
-You are a meticulous research assistant. Based on the main question and the research context provided below, generate the next single, specific sub-question to continue the research.
-Pay strict attention to the details provided in the main question and context, such as dates, names, and locations. Do not invent or change these details.
-The sub-question should be a focused query suitable for a web search.
-Respond with a JSON object containing a single key "question".
+            You are a meticulous research assistant. Based on the main question and the research context provided below, generate the next single, specific sub-question to continue the research.
+            Pay strict attention to the details provided in the main question and context, such as dates, names, and locations. Do not invent or change these details.
+            The sub-question should be a focused query suitable for a web search.
+            Respond with a JSON object containing a single key "question".
 
-Main Question: '{}'
+            Main Question: '{}'
 
-Research Context:
-{}
-"#, main_question, context)
+            Research Context:
+            {}
+            "#,
+            main_question, context
+        )
     };
 
-    let response = ollama::query_ollama(&prompt, model).await?;
-    let json_response: serde_json::Value = serde_json::from_str(&response)?;
-    let sub_question = json_response["question"].as_str().ok_or("Failed to extract question from JSON")?.to_string();
-    Ok(sub_question)
+    let format = FormatType::StructuredJson(Box::new(JsonStructure::new::<SubQuestionOutput>()));
+    let response = ollama::query_ollama(&prompt, model, Some(format)).await?;
+    let sub_question_output: SubQuestionOutput = serde_json::from_str(&response)?;
+    Ok(sub_question_output.question)
 }
 
 async fn should_stop(global_summary: &str, main_question: &str, model: &str) -> bool {
-    let prompt = format!("Based on the research summary so far:
-{}
+    #[derive(JsonSchema, Deserialize)]
+    struct StopDecision {
+        decision: String,
+    }
 
-Can you now provide a comprehensive answer to the main question: '{}'? Respond with 'Yes' or 'No'.", global_summary, main_question);
-    
-    match ollama::query_ollama(&prompt, model).await {
-        Ok(response) => response.trim().to_lowercase().starts_with("yes"),
+    let prompt = format!("Based on the research summary so far:\n{}\n\nCan you now provide a comprehensive answer to the main question: '{}'? Respond with a JSON object containing a single key \"decision\" with value \"yes\" or \"no\".", global_summary, main_question);
+
+    let format = FormatType::StructuredJson(Box::new(JsonStructure::new::<StopDecision>()));
+    match ollama::query_ollama(&prompt, model, Some(format)).await {
+        Ok(response) => {
+            let decision: StopDecision = serde_json::from_str(&response).unwrap_or_else(|_| StopDecision { decision: "no".to_string() });
+            decision.decision.trim().to_lowercase().starts_with("yes")
+        },
         Err(_) => false, // If Ollama fails, assume we can't answer yet
     }
 }

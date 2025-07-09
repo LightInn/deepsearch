@@ -127,7 +127,7 @@ src/
 
 ## 📈 **Optimizations**
 
-* Always request `format=json` in Ollama prompts.
+* Always use `FormatType::StructuredJson` in Ollama prompts for reliable JSON parsing.
 * Limit Ollama input: only pass minimal context & sub-question.
 * Cache Ollama calls & fetched pages if running iteratively.
 * Cap number of search results & page size early.
@@ -146,6 +146,7 @@ src/
 | ✅ 5       | Page scrape & summary                |
 | ✅ 6       | Evaluation loop                      |
 | ✅ 7       | Final answer output                  |
+| ✅ 8       | Implement `FormatType::StructuredJson` for all Ollama calls |
 
 ---
 
@@ -162,7 +163,7 @@ src/
 ## 🗂️ **Next Steps**
 
 ✅ Bootstrap project & skeleton
-✅ Implement `ollama.rs` with model listing & JSON calls
+✅ Implement `ollama.rs` with model listing & structured JSON calls
 ✅ Implement Wikipedia search module
 🔜 Build orchestrator loop step by step
 🔜 Focus on per-step validation & defensive coding

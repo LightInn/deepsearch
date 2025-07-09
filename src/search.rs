@@ -1,5 +1,6 @@
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use scraper::{Html, Selector};
+use schemars::JsonSchema;
 
 #[derive(Debug, Deserialize)]
 struct ApiResponse {
@@ -11,7 +12,7 @@ struct Query {
     search: Vec<SearchResult>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, JsonSchema, Serialize)]
 pub struct SearchResult {
     pub title: String,
     pub url: String,
