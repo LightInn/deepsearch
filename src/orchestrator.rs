@@ -83,7 +83,7 @@ You are a meticulous research assistant. Your task is to generate a specific and
 First, identify the core event or entity in the main question. Then, formulate a sub-question to gather initial information about that event or entity.
 Pay strict attention to the details provided in the main question, such as dates, names, and locations. Do not invent or change these details.
 The sub-question should be a single, focused query that can be effectively used for a web search.
-Respond with a JSON object containing a single key "question". Do NOT wrap the JSON in a Markdown code block.
+Respond with a JSON object containing a single key "question".
 
 Example:
 {{
@@ -97,7 +97,7 @@ Main Question: '{}'
 You are a meticulous research assistant. Based on the main question and the research context provided below, generate the next single, specific sub-question to continue the research.
 Pay strict attention to the details provided in the main question and context, such as dates, names, and locations. Do not invent or change these details.
 The sub-question should be a focused query suitable for a web search.
-Respond with a JSON object containing a single key "question". Do NOT wrap the JSON in a Markdown code block.
+Respond with a JSON object containing a single key "question".
 
 Main Question: '{}'
 

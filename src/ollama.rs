@@ -23,8 +23,7 @@ pub async fn filter_search_results(sub_question: &str, results: &[SearchResult],
     if results.is_empty() {
         return Ok(Vec::new());
     }
-    let results_str = results.iter().map(|r| format!("Title: {} URL: {}", r.title, r.url)).collect::<Vec<String>>().join("
-");
+    let results_str = results.iter().map(|r| format!("Title: {} URL: {}", r.title, r.url)).collect::<Vec<String>>().join("\n");
     let json_example = r#"{
   "results": [
     {
@@ -33,16 +32,7 @@ pub async fn filter_search_results(sub_question: &str, results: &[SearchResult],
     }
   ]
 }"#;
-    let prompt = format!("You are a search result filter. Your task is to identify relevant search results for a given topic. Below is the topic and a list of search results. Each search result is formatted as 'Title: [title] URL: [url]'.
-
-Topic: '{}'
-
-Search Results:
-{}
-
-Respond with a JSON object containing a key 'results' which is an array of objects, where each object has 'title' and 'url' keys. Do NOT wrap the JSON in a Markdown code block.
-Example:
-{}", sub_question, results_str, json_example);
+    let prompt = format!("You are a search result filter. Your task is to identify relevant search results for a given topic. Below is the topic and a list of search results. Each search result is formatted as 'Title: [title] URL: [url]'.\n\nTopic: '{}'\n\nSearch Results:\n{}\n\nRespond with a JSON object containing a key 'results' which is an array of objects, where each object has 'title' and 'url' keys.\nExample:\n{}", sub_question, results_str, json_example);
     let response = query_ollama(&prompt, model).await?;
     
     #[derive(Deserialize)]
@@ -55,25 +45,19 @@ Example:
 }
 
 pub async fn summarize_text(text: &str, sub_question: &str, model: &str) -> Result<String, OllamaError> {
-    let prompt = format!("Summarize the following text in relation to the question: '{}'. Do NOT wrap the summary in a Markdown code block.
-
-Text:
-{}", sub_question, text);
+    let prompt = format!("Summarize the following text in relation to the question: '{}'.\n\nText:\n{}", sub_question, text);
     let response = query_ollama(&prompt, model).await?;
     Ok(response)
 }
 
 pub async fn evaluate_completeness_and_answer(main_question: &str, global_summary: &str, model: &str) -> Result<String, OllamaError> {
-    let prompt = format!("Synthesize the information in the research summary to directly answer the following question: '{}'. Do NOT wrap the answer in a Markdown code block.
-
-Research Summary:
-{}", main_question, global_summary);
+    let prompt = format!("Synthesize the information in the research summary to directly answer the following question: '{}'.\n\nResearch Summary:\n{}", main_question, global_summary);
     let response = query_ollama(&prompt, model).await?;
     Ok(response)
 }
 
 pub async fn decide_search_tool(sub_question: &str, model: &str) -> Result<String, OllamaError> {
-    let prompt = format!("Given the sub-question: '{}', should I use Wikipedia or DuckDuckGo to find the answer? Respond with 'wikipedia' or 'duckduckgo'. Do NOT wrap the response in a Markdown code block.", sub_question);
+    let prompt = format!("Given the sub-question: '{}', should I use Wikipedia or DuckDuckGo to find the answer? Respond with 'wikipedia' or 'duckduckgo'.", sub_question);
     let response = query_ollama(&prompt, model).await?;
     Ok(response.trim().to_lowercase())
 }
