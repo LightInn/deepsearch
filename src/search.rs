@@ -8,8 +8,13 @@ struct ApiResponse {
 }
 
 #[derive(Debug, Deserialize)]
+struct WikipediaSearchEntry {
+    title: String,
+}
+
+#[derive(Debug, Deserialize)]
 struct Query {
-    search: Vec<SearchResult>,
+    search: Vec<WikipediaSearchEntry>,
 }
 
 #[derive(Debug, Deserialize, JsonSchema, Serialize)]
@@ -29,16 +34,18 @@ pub async fn search_wikipedia(search_term: &str) -> Result<Vec<SearchResult>, Bo
             ("list", "search"),
             ("srsearch", search_term),
             ("format", "json"),
-            ("srprop", "snippet|titles|url"), // Request URL as well
+            ("srprop", "titles"), // Request only title to construct URL
         ])
         .send()
         .await?;
 
     let api_response = response.json::<ApiResponse>().await?;
 
-    Ok(api_response.query.search.into_iter().map(|mut sr| {
-        sr.url = format!("https://en.wikipedia.org/wiki/{}", sr.title.replace(" ", "_"));
-        sr
+    Ok(api_response.query.search.into_iter().map(|sr| {
+        SearchResult {
+            title: sr.title.clone(),
+            url: format!("https://en.wikipedia.org/wiki/{}", sr.title.replace(" ", "_")),
+        }
     }).collect())
 }
 

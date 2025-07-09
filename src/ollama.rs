@@ -32,6 +32,9 @@ pub async fn query_ollama(
 
     let res = ollama.generate(gen_req).await?;
 
+    // Debug print the raw response
+    dbg!(&res.response);
+
     Ok(res.response)
 }
 

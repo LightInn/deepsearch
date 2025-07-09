@@ -91,14 +91,13 @@ async fn generate_next_sub_question(
     let prompt = if context.is_empty() {
         format!(r#"
 You            You are a meticulous research assistant. Your task is to generate a specific and relevant sub-question to help answer the main question.
-            First, identify the core event or entity in the main question. Then, formulate a sub-question to gather initial information about that event or entity.
-            Pay strict attention to the details provided in the main question, such as dates, names, and locations. Do not invent or change these details.
+            For the first sub-question, focus on identifying the core event or entity mentioned in the main question, including any specific dates or locations. Do not try to answer the main question directly yet.
             The sub-question should be a single, focused query that can be effectively used for a web search.
             Respond with a JSON object containing a single key "question".
 
             Example:
             {{
-              "question": "What were the key findings of the 2023 IPCC report on climate change?"
+              "question": "What happened on September 21, 2001 in France?"
             }}
 
             Main Question: '{}'
