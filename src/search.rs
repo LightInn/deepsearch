@@ -52,7 +52,7 @@ pub async fn search_wikipedia(search_term: &str) -> Result<Vec<SearchResult>, Bo
 pub async fn search_duckduckgo(search_term: &str) -> Result<Vec<SearchResult>, Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let url = format!("https://html.duckduckgo.com/html/?q={}", search_term);
-    println!("duck!");
+    
 
     let html_content = client.get(&url).send().await?.text().await?;
 

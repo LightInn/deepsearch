@@ -1,5 +1,7 @@
 # Deep Search CLI
 
+![Demo](demo/demo.png)
+
 **An AI-powered research assistant for your terminal.**
 
 Deep Search is a command-line tool that uses local large language models (LLMs) to provide in-depth answers to complex questions. It breaks down your query, scours the web for relevant information, and synthesizes a comprehensive response, all within your terminal.

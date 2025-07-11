@@ -9,6 +9,7 @@ mod ollama;
 mod orchestrator;
 mod parser;
 mod search;
+mod prompts;
 
 #[tokio::main]
 async fn main() -> io::Result<()> {
