@@ -59,6 +59,18 @@ The tool follows a structured research workflow:
 
 ## Installation
 
+### From Crates.io
+
+Once the package is published to crates.io, you can install it directly using `cargo`:
+
+```bash
+cargo install deepsearch
+```
+
+This will install the `deepsearch` binary in your cargo bin directory, allowing you to run it from anywhere in your terminal.
+
+### From Source
+
 1.  **Install Rust:** If you don't have Rust, install it from [rust-lang.org](https://www.rust-lang.org/).
 2.  **Install Ollama:** You need a running Ollama instance. See the [Ollama website](https://ollama.ai/) for installation instructions.
 3.  **Clone the repository:**
@@ -67,21 +79,51 @@ The tool follows a structured research workflow:
     cd deepsearch
     ```
 4.  **Build the project:**
+
+    For a development build, run:
+    ```bash
+    cargo build
+    ```
+    The executable will be at `./target/debug/deepsearch`.
+
+    For a release (production) build, run:
     ```bash
     cargo build --release
     ```
-5.  **Run the tool:**
-    ```bash
-    ./target/release/deepsearch "Your research question"
-    ```
+    The executable will be at `./target/release/deepsearch`.
 
-## Development
+## Usage
 
-To build and run the project in development mode:
+Once built, you can run the tool from the command line.
+
+### From Release Build
+
+```bash
+./target/release/deepsearch "Your research question"
+```
+
+### With Cargo
+
+For development, you can run the tool directly with `cargo`:
 
 ```bash
 cargo run -- "Your research question"
 ```
+
+### Parameters
+
+You can customize the behavior of the tool with the following parameters:
+
+*   `--max-iterations` or `-i`: Set the maximum number of research iterations.
+*   `--model` or `-m`: Specify the Ollama model to use.
+
+**Example:**
+
+```bash
+./target/release/deepsearch "How does photosynthesis work?" -i 5 -m "llama3"
+```
+
+This will start a research task on "How does photosynthesis work?", with a maximum of 5 iterations, using the `llama3` model.
 
 ## Contributing
 
