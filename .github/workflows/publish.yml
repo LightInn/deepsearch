@@ -15,6 +15,13 @@ jobs:
       - uses: actions/checkout@v3
         with:
           persist-credentials: false
+      - name: Prevent infinite loop
+        run: |
+          AUTHOR=$(git log -1 --pretty=format:'%an')
+          if [ "$AUTHOR" = "github-actions" ]; then
+            echo "Commit made by github-actions, skipping workflow to prevent infinite loop."
+            exit 0
+          fi
       - name: Bump patch version
         id: bump_version
         run: |
