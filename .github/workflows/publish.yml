@@ -28,7 +28,7 @@ jobs:
           echo "New version: $NEW_VERSION"
 
           # Update Cargo.toml
-          sed -i "s/^version = ".*"/version = "${NEW_VERSION}"/" Cargo.toml
+          sed -i "s/^version = \"[^\"]*\"/version = \"${NEW_VERSION}\"/" Cargo.toml
 
           # Run cargo check to update Cargo.lock
           cargo check
