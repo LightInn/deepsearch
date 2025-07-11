@@ -10,5 +10,9 @@ pub struct Cli {
     /// Maximum number of iterations
     #[arg(short = 'i', long, default_value_t = 3)]
     pub max_iterations: u8,
+
+    /// Enable verbose output
+    #[arg(short, long, default_value_t = false)]
+    pub verbose: bool,
 }
 

@@ -63,7 +63,7 @@ async fn main() -> io::Result<()> {
         "...".bold().cyan()
     );
 
-    orchestrator::run(&question, cli.max_iterations, &model).await;
+    orchestrator::run(&question, cli.max_iterations, &model, cli.verbose).await;
 
     Ok(())
 }

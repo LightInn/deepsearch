@@ -116,6 +116,7 @@ You can customize the behavior of the tool with the following parameters:
 
 *   `--max-iterations` or `-i`: Set the maximum number of research iterations.
 *   `--model` or `-m`: Specify the Ollama model to use.
+*   `--verbose` or `-v`: Enable verbose output for debugging purposes.
 
 **Example:**
 
