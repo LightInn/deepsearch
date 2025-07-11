@@ -1,6 +1,6 @@
 [package]
 name = "deepsearch"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2024"
 description = "A CLI for AI-powered research assistance, using local LLMs to decompose questions, search the web, and synthesize answers."
 license = "MIT"
