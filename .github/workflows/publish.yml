@@ -13,7 +13,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Publish
+      - name: Bump version and publish
         run: |
-          git add Cargo.lock
+          # Get current version
+          CURRENT_VERSION=$(grep '^version' Cargo.toml | cut -d '"' -f 2)
+          echo "Current version: $CURRENT_VERSION"
+
+          # Split into major, minor, patch
+          IFS='.' read -r -a VERSION_PARTS <<< "$CURRENT_VERSION"
+          MAJOR=${VERSION_PARTS[0]}
+          MINOR=${VERSION_PARTS[1]}
+          PATCH=$((VERSION_PARTS[2] + 1))
+          NEW_VERSION="${MAJOR}.${MINOR}.${PATCH}"
+          echo "New version: $NEW_VERSION"
+
+          # Update Cargo.toml
+          sed -i "s/^version = "${CURRENT_VERSION}"/version = "${NEW_VERSION}"/" Cargo.toml
+
+          # Run cargo check to update Cargo.lock
+          cargo check
+
+          # Commit changes
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add Cargo.toml Cargo.lock
+          git commit -m "CI: Bump version to ${NEW_VERSION}"
+
+          # Publish
           cargo publish --token ${{ secrets.CARGO_REGISTRY_TOKEN }} --allow-dirty
