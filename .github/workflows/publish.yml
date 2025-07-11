@@ -27,7 +27,7 @@ jobs:
           echo "New version: $NEW_VERSION"
 
           # Update Cargo.toml with new version
-          sed -i "s/^version = \"[^"]*\"/version = \"$NEW_VERSION\"/" Cargo.toml
+          sed -i 's/^version = "[^"]*"/version = "'$NEW_VERSION'"/' Cargo.toml
 
           # Output new version for later steps
           echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
