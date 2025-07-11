@@ -16,13 +16,16 @@ jobs:
         with:
           persist-credentials: false
       - name: Prevent infinite loop
+        id: check_author
         run: |
           AUTHOR=$(git log -1 --pretty=format:'%an')
           if [ "$AUTHOR" = "github-actions" ]; then
-            echo "Commit made by github-actions, skipping workflow to prevent infinite loop."
-            exit 0
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
           fi
       - name: Bump patch version
+        if: steps.check_author.outputs.skip == 'false'
         id: bump_version
         run: |
           # Extract current version from Cargo.toml
@@ -40,11 +43,11 @@ jobs:
 
           # Output new version for later steps
           echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
-
       - name: Update Cargo.lock
+        if: steps.check_author.outputs.skip == 'false'
         run: cargo check
-
       - name: Commit new version
+        if: steps.check_author.outputs.skip == 'false'
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
@@ -52,6 +55,6 @@ jobs:
           git commit -m "CI: Bump version to ${{ steps.bump_version.outputs.new_version }}"
           git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}
           git push origin HEAD:main
-
       - name: Publish to crates.io
+        if: steps.check_author.outputs.skip == 'false'
         run: cargo publish --token ${{ secrets.CARGO_REGISTRY_TOKEN }} --allow-dirty
