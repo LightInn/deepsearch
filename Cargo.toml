@@ -9,7 +9,7 @@ repository = "https://github.com/LightInn/deepsearch"
 
 [dependencies]
 clap = { version = "4.5.40", features = ["derive"] }
-colored = "2.0.0"
+colored = "3.0.0"
 env_logger = "0.11.8"
 ollama-rs = { version = "0.3.2", features = ["tokio"] }
 thiserror = "2.0.0"
