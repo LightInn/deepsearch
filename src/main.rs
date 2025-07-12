@@ -15,6 +15,21 @@ mod prompts;
 async fn main() -> io::Result<()> {
     let cli = cli::Cli::parse();
 
+    println!(
+        "{}",
+        "----------------------------------------".purple().bold()
+    );
+    println!(
+        "{} {}",
+        "🤖 Welcome to the".purple().bold(),
+        "Deep Search CLI!".yellow().bold()
+    );
+    println!(
+        "{}",
+        "----------------------------------------".purple().bold()
+    );
+    println!();
+
     // --- Interactive Model Selection ---
     let available_models = match ollama::list_ollama_models().await {
         Ok(models) => models,
