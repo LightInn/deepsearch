@@ -48,7 +48,7 @@ jobs:
         run: cargo check
       - name: Publish to crates.io
         if: steps.check_author.outputs.skip == 'false'
-        run: cargo publish --token ${{ secrets.CARGO_REGISTRY_TOKEN }}
+        run: cargo publish --token ${{ secrets.CARGO_REGISTRY_TOKEN }} --allow-dirty
       - name: Commit new version
         if: steps.check_author.outputs.skip == 'false'
         run: |
