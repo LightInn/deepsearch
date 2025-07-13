@@ -2,6 +2,12 @@
 
 ![Demo](demo/demo.png)
 
+![Flowchart](demo/flowchart.svg)
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Crates.io](https://img.shields.io/crates/v/deepsearch.svg)](https://crates.io/crates/deepsearch)
+[![Rust](https://img.shields.io/badge/rust-1.60%2B-orange.svg)](https://www.rust-lang.org/)
+
 **An AI-powered research assistant for your terminal.**
 
 Deep Search is a command-line tool that uses local large language models (LLMs) to provide in-depth answers to complex questions. It breaks down your query, scours the web for relevant information, and synthesizes a comprehensive response, all within your terminal.
@@ -16,41 +22,6 @@ Deep Search is a command-line tool that uses local large language models (LLMs) 
 ## How It Works
 
 The tool follows a structured research workflow:
-
-```
-         +---------------------+
-         |   User Question     |
-         +----------+----------+
-                    |
-                    v
-+-------------------+-------------------+
-|  Decompose into Sub-questions (LLM)   |
-+-------------------+-------------------+
-                    |
-                    v
-+-------------------+-------------------+
-|      Search (Wikipedia / DuckDuckGo)  |
-+-------------------+-------------------+
-                    |
-                    v
-+-------------------+-------------------+
-|   Filter Results (LLM)                |
-+-------------------+-------------------+
-                    |
-                    v
-+-------------------+-------------------+
-|      Summarize Content (LLM)          |
-+-------------------+-------------------+
-                    |
-                    v
-+-------------------+-------------------+
-|      Evaluate & Synthesize (LLM)      |
-+-------------------+-------------------+
-                    |
-+-------------------+-------------------+
-|  Final Answer     |
-+-------------------+
-```
 
 1.  **Decompose:** The initial question is broken down into smaller, specific sub-questions.
 2.  **Search:** Each sub-question is researched using Wikipedia or DuckDuckGo.
@@ -130,4 +101,12 @@ This will start a research task on "How does photosynthesis work?", with a maxim
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a pull request or open an issue.
+Contributions are welcome! If you'd like to contribute, please feel free to submit a pull request or open an issue.
+
+### Prompt Engineering
+
+A core part of this tool is the quality of the prompts used to interact with the LLM. If you have ideas for improving the prompts, you are encouraged to modify the `src/prompts.rs` file and submit a pull request. Better prompts lead to better research outcomes!
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

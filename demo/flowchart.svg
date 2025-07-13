@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="700" viewBox="0 0 900 700">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Virgil:wght@400&display=swap');
+      .virgil { font-family: 'Virgil', cursive; }
+      .label { font-size: 16px; text-anchor: middle; fill: #333; }
+      .file-label { font-size: 12px; text-anchor: middle; fill: #555; }
+      .arrow-head { fill: #333; }
+      .box {
+        stroke: #333;
+        stroke-width: 2;
+        fill: #fff;
+        rx: 8;
+        ry: 8;
+      }
+    </style>
+  </defs>
+
+  <!-- Boxes -->
+  <rect x="350" y="50" width="200" height="60" class="box" />
+  <text x="450" y="80" class="virgil label">User Question</text>
+  <text x="450" y="100" class="virgil file-label">(main.rs, cli.rs)</text>
+
+  <rect x="300" y="150" width="300" height="60" class="box" />
+  <text x="450" y="180" class="virgil label">Decompose into Sub-questions</text>
+  <text x="450" y="200" class="virgil file-label">(orchestrator.rs, prompts.rs, ollama.rs)</text>
+
+  <rect x="300" y="250" width="300" height="60" class="box" />
+  <text x="450" y="280" class="virgil label">Search</text>
+  <text x="450" y="300" class="virgil file-label">(search.rs)</text>
+
+  <rect x="300" y="350" width="300" height="60" class="box" />
+  <text x="450" y="380" class="virgil label">Filter Results</text>
+  <text x="450" y="400" class="virgil file-label">(parser.rs, prompts.rs, ollama.rs)</text>
+
+  <rect x="300" y="450" width="300" height="60" class="box" />
+  <text x="450" y="480" class="virgil label">Summarize Content</text>
+  <text x="450" y="500" class="virgil file-label">(orchestrator.rs, prompts.rs, ollama.rs)</text>
+
+  <rect x="350" y="550" width="200" height="60" class="box" />
+  <text x="450" y="580" class="virgil label">Final Answer</text>
+  <text x="450" y="600" class="virgil file-label">(main.rs)</text>
+
+  <!-- Arrows -->
+  <line x1="450" y1="110" x2="450" y2="140" stroke="#333" stroke-width="2" />
+  <polygon points="445,140 455,140 450,150" class="arrow-head" />
+
+  <line x1="450" y1="210" x2="450" y2="240" stroke="#333" stroke-width="2" />
+  <polygon points="445,240 455,240 450,250" class="arrow-head" />
+
+  <line x1="450" y1="310" x2="450" y2="340" stroke="#333" stroke-width="2" />
+  <polygon points="445,340 455,340 450,350" class="arrow-head" />
+
+  <line x1="450" y1="410" x2="450" y2="440" stroke="#333" stroke-width="2" />
+  <polygon points="445,440 455,440 450,450" class="arrow-head" />
+
+  <line x1="450" y1="510" x2="450" y2="540" stroke="#333" stroke-width="2" />
+  <polygon points="445,540 455,540 450,550" class="arrow-head" />
+</svg>
