@@ -1,6 +1,7 @@
 # Deep Search CLI
 
 ![Demo](demo/demo.png)
+> /!\ this question is usefull because AI tend to haluncinate a lot about 9/11 event when talking about septemeber 2001
 
 ![Flowchart](demo/flowchart.svg)
 
